@@ -1,6 +1,6 @@
 # search-leaks
 
-OSINT-focused CLI tool to query **data leak / breach statistics** for **domains** and **email addresses** using public threat-intel APIs (Hudson Rock Cavalier OSINT endpoints). Designed for cybersecurity assessments, vendor risk reviews, and due diligence workflows.
+OSINT-focused CLI tool to query **data leak / breach statistics** for **domains** and **email addresses** using public threat-intel APIs (Hudson Rock Cavalier OSINT endpoints). Built for cybersecurity assessments, vendor risk reviews, and due diligence workflows.
 
 Repository: [https://github.com/haltman-io/search-leaks](https://github.com/haltman-io/search-leaks)
 
@@ -9,6 +9,8 @@ Repository: [https://github.com/haltman-io/search-leaks](https://github.com/halt
 ## Why this exists
 
 Security teams often need a fast, repeatable way to check whether a company (or a specific mailbox) shows signs of credential exposure or info-stealer-related risk, **without collecting or storing sensitive breach payloads**. This tool consumes **statistical JSON** responses and prints a **structured, greppable** output.
+
+For domain lookups, you can also enable **statistics-only output** (`--statistics/-stats`) to print just the core, high-signal fields required for quick reporting.
 
 ---
 
@@ -25,6 +27,9 @@ Security teams often need a fast, repeatable way to check whether a company (or 
   * **Automatic** (default): detects domain vs email per target
   * **Domain forced**: emails are converted to their domain
   * **Email forced**: domains expand into common mailbox aliases (e.g., `postmaster@domain`)
+* Domain **statistics-only** output:
+
+  * `--statistics/-stats` prints only: `total`, `employees`, `users`, `third_parties`, `last_employee_compromised`, `last_user_compromised`
 * Rate limit aware: **50 requests / 10 seconds**
 * Fails fast: aborts after **3 consecutive API errors**
 * Colored output (ANSI), disable with `--no-color/-nc`
@@ -37,6 +42,8 @@ Security teams often need a fast, repeatable way to check whether a company (or 
 ![Basic usage](docs/screenshots/basic-run.png)
 
 ![Pipeline usage](docs/screenshots/pipeline.png)
+
+![Statistics usage](docs/screenshots/statistics.png)
 
 ---
 
@@ -100,6 +107,10 @@ search-leaks -h
 * `--automatic, -a` (default): auto-detect target type per item
 * `--domain, -d`: force domain endpoint for all items
 * `--email, -e`: force email endpoint for all items
+
+**Domain output**
+
+* `--statistics, -stats`: domain-only, print core fields only (`total`, `employees`, `users`, `third_parties`, `last_employee_compromised`, `last_user_compromised`)
 
 **Output & logging**
 
@@ -182,6 +193,43 @@ All items are treated as **email queries**:
 
 ```bash
 ./search-leaks -e -t example.com
+```
+
+---
+
+## Statistics-only mode (domain)
+
+`--statistics/-stats` is intended for **quick reporting** and **cleaner output** when you only need the core domain indicators.
+
+It affects **domain requests only** (email output remains unchanged).
+
+Fields printed:
+
+* `total`
+* `employees`
+* `users`
+* `third_parties`
+* `last_employee_compromised`
+* `last_user_compromised`
+
+Example:
+
+```bash
+./search-leaks --statistics -t tesla.com
+# or
+./search-leaks -stats -t tesla.com
+```
+
+Expected output shape:
+
+```text
+[tesla.com] [https://.../search-by-domain?domain=tesla.com]
+[tesla.com] [total: 23686]
+[tesla.com] [employees: 441]
+[tesla.com] [users: 23245]
+[tesla.com] [third_parties: 629]
+[tesla.com] [last_employee_compromised: 2025-12-01T20:37:15.000Z]
+[tesla.com] [last_user_compromised: 2025-12-15T15:23:49.719Z]
 ```
 
 ---
@@ -283,9 +331,8 @@ If you discover a security issue in this repository:
 3. Contact:
 
    * Create a private advisory (recommended) via GitHub Security Advisories (if enabled), **or**
-   * Email the maintainers (add an email here)
+   * Email the maintainers: `security@haltman.io`
 
-> **Maintainer security contact (TODO):** add `security@haltman.io` or an appropriate mailbox.
 
 ---
 
