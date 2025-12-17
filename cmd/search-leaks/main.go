@@ -6,12 +6,12 @@ import (
 	"os"
 	"time"
 
-	"search-leaks/internal/api"
-	"search-leaks/internal/cli"
-	"search-leaks/internal/output"
-	"search-leaks/internal/ratelimit"
-	"search-leaks/internal/targets"
-	"search-leaks/internal/util"
+	"github.com/haltman-io/search-leaks/internal/api"
+	"github.com/haltman-io/search-leaks/internal/cli"
+	"github.com/haltman-io/search-leaks/internal/output"
+	"github.com/haltman-io/search-leaks/internal/ratelimit"
+	"github.com/haltman-io/search-leaks/internal/targets"
+	"github.com/haltman-io/search-leaks/internal/util"
 )
 
 const (

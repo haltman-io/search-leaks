@@ -5,8 +5,8 @@ import (
 	"net/url"
 	"strings"
 
-	"search-leaks/internal/api"
-	"search-leaks/internal/cli"
+	"github.com/haltman-io/search-leaks/internal/api"
+	"github.com/haltman-io/search-leaks/internal/cli"
 )
 
 type Request struct {
